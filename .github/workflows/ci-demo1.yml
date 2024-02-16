@@ -46,7 +46,7 @@ jobs:
       - name: Test another repo
         uses: DeveloperMetrics/deployment-frequency@main
         with:
-          workflows: 'CI/CD'
+          workflows: 'CI DEMO1'
           #owner-repo: 'DeveloperMetrics/DevOpsMetrics'
           default-branch: 'main'
           number-of-days: 1
