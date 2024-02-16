@@ -39,3 +39,11 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           cat README.md
+
+      - name: Test another repo
+        uses: DeveloperMetrics/deployment-frequency@main
+        with:
+          workflows: 'CI/CD'
+          owner-repo: 'DeveloperMetrics/DevOpsMetrics'
+          default-branch: 'main'
+          number-of-days: 10
