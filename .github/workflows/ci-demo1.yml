@@ -46,4 +46,4 @@ jobs:
           workflows: 'CI/CD'
           owner-repo: 'DeveloperMetrics/DevOpsMetrics'
           default-branch: 'main'
-          number-of-days: 10
+          number-of-days: 1
