@@ -44,6 +44,7 @@ jobs:
         uses: DeveloperMetrics/deployment-frequency@main
         with:
           workflows: 'CI/CD'
-          owner-repo: 'DeveloperMetrics/DevOpsMetrics'
+          #owner-repo: 'DeveloperMetrics/DevOpsMetrics'
           default-branch: 'main'
           number-of-days: 1
+          actions-token: "${{ secrets.GITHUB_TOKEN }}"
