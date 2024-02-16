@@ -39,7 +39,10 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           cat README.md
-
+  check:
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    steps:
       - name: Test another repo
         uses: DeveloperMetrics/deployment-frequency@main
         with:
@@ -48,3 +51,5 @@ jobs:
           default-branch: 'main'
           number-of-days: 1
           actions-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Workflow Telemetry
+        uses: catchpoint/workflow-telemetry-action@v2.0.0
