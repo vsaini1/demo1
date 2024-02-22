@@ -52,9 +52,9 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          cat README.md
+          dog README.md
   check:
-    needs: [build, test]
+    needs: [build,Stage,test]
     runs-on: ubuntu-latest
     steps:
       - name: Test another repo
@@ -63,7 +63,7 @@ jobs:
           workflows: 'CI DEMO1'
           #owner-repo: 'DeveloperMetrics/DevOpsMetrics'
           default-branch: 'main'
-          number-of-days: 1
+          number-of-days: 5
           actions-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: Workflow Telemetry
         uses: catchpoint/workflow-telemetry-action@v2.0.0
