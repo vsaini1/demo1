@@ -8,6 +8,11 @@ on:
     branches: [ "main" ]
 
 jobs:
+  telemetry:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Workflow Telemetry
+          uses: catchpoint/workflow-telemetry-action@v2.0.0
   Stage:
     runs-on: ubuntu-latest
     steps:
@@ -67,8 +72,6 @@ jobs:
       matrix:
         node-version: [12.x,14.x,16.x]
     steps:
-        - name: Workflow Telemetry
-          uses: catchpoint/workflow-telemetry-action@v2.0.0
         - uses: actions/checkout@v4
         - name: Use Node.js ${{ matrix.node-version }}
           uses: actions/setup-node@v3
