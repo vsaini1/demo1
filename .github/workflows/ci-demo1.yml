@@ -1,17 +1,18 @@
 # This is a basic workflow to help you get started with Actions
 
 name: CI DEMO1
-
+run-name: ${{ github.actor }} is learning GitHub Actions
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
+  workflow_dispatch:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  #workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -54,7 +55,7 @@ jobs:
           echo test, and deploy your project.
           dog README.md
   check:
-    needs: [build,Stage,test]
+    needs: [build,Stage,test,pkg-bats-version]
     runs-on: ubuntu-latest
     steps:
       - name: Test another repo
@@ -67,3 +68,13 @@ jobs:
           actions-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: Workflow Telemetry
         uses: catchpoint/workflow-telemetry-action@v2.0.0
+
+  pkg-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-node@v3
+          with:
+            node-version: '14'
+        - run: npm install -g bats
+        - run: bats -v
