@@ -1,12 +1,19 @@
 name: dora 
-description: "Run dora for the current repo"
-inputs: 
-  token: 
-     description: secret token 
-     required: true  
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+#description: "Run dora for the current repo"
+#inputs: 
+#  token: 
+#     description: secret token 
+#     required: true  
    
-runs: 
-  using: composite 
+runs:
+  runs-on: ubuntu-latest  
+  #using: composite 
   steps: 
     - name: List Base Branch 
       shell: bash 
