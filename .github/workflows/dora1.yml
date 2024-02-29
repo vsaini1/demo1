@@ -27,8 +27,8 @@ jobs:
       id: start-time
       shell: bash
       run: |
-        #echo "::set-output name=start_time::$(date -u +%s)"
-        echo start_time=$(date -u +%s)
+        echo "::set-output name=start_time::$(date -u +%s)"
+        #echo start_time=$(date -u +%s)
     - name: Deployment Frequency
       id: script
       shell: bash
@@ -49,10 +49,27 @@ jobs:
           echo "Deployment frequency: $deployment_frequency"
           echo "::set-output name=deployment_frequency::$deployment_frequency"
           #echo "deployment_frequency=$deployment_frequency"
+    - name: Failure rate
+      id: frate
+      shell: bash
+      run: |
+         default_branch=main
+         repository=vsaini1/demo1
+         response=$(curl -s -H "Authorization: token ${{secrets.GITHUB_TOKEN}}" \
+         "https://api.github.com/repos/$repository/actions/runs?branch=$default_branch")
+         # Extract failure count and total runs count
+         total_runs=$(echo "$response" | jq '.total_count')
+         failed_runs=$(echo "$response" | jq '[.workflow_runs[] | select(.conclusion == "failure")] | length')
+         # Calculate failure rate
+         failure_rate=$(awk "BEGIN { printf \"%.2f\n\", $failed_runs / $total_runs * 100 }")
+         echo "Failure Rate for $default_branch: $failure_rate %"
+         echo "::set-output name=failure_rate::$failure_rate"
+
     - name: Display metrics
       shell: bash
       run: |
          echo "Deployment frequency: ${{ steps.script.outputs.deployment_frequency }}"
+         echo "Failure Rate: ${{ steps.frate.outputs.failure_rate }}"
     - name: Generate a table of metrics results
       id: generate-table
       shell: bash
@@ -61,3 +78,4 @@ jobs:
           echo "|     Parameters         |  Values  |    Description       |" >> $GITHUB_STEP_SUMMARY
           echo "| ---------------------- | -------- | -------------------- |" >> $GITHUB_STEP_SUMMARY
           echo "| deployment_frequency   | ${{ steps.script.outputs.deployment_frequency}} | This is depl fre|" >> $GITHUB_STEP_SUMMARY
+          echo "| Failure Rate           | ${{ steps.frate.outputs.failure_rate}} | This is failure rate|" >> $GITHUB_STEP_SUMMARY
