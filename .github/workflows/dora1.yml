@@ -52,7 +52,7 @@ jobs:
     - name: Display metrics
       shell: bash
       run: |
-         echo Deployment frequency: $deployment_frequency
+         echo "Deployment frequency: $deployment_frequency"
     - name: Generate a table of metrics results
       id: generate-table
       shell: bash
@@ -60,4 +60,4 @@ jobs:
           echo "## VBM Backend CI/CD pipeline metrics :rocket:" >> $GITHUB_STEP_SUMMARY
           echo "|     Parameters         |  Values  |    Description       |" >> $GITHUB_STEP_SUMMARY
           echo "| ---------------------- | -------- | -------------------- |" >> $GITHUB_STEP_SUMMARY
-          echo "| deployment_frequency   | ${deployment_frequency} | This is depl fre|" >> $GITHUB_STEP_SUMMARY
+          echo "| deployment_frequency   | $deployment_frequency | This is depl fre|" >> $GITHUB_STEP_SUMMARY
