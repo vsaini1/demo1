@@ -48,7 +48,7 @@ jobs:
           deployment_frequency=$(echo "$filtered_workflow_runs" | grep '"conclusion": "success"' | wc -l)
           echo "Deployment frequency: $deployment_frequency"
           #echo "::set-output name=deployment_frequency::$deployment_frequency"
-          #echo deployment_frequency=$deployment_frequency
+          echo "{deployment_frequency}={$deployment_frequency}"
     - name: Display metrics
       shell: bash
       run: |
@@ -60,4 +60,4 @@ jobs:
           echo "## VBM Backend CI/CD pipeline metrics :rocket:" >> $GITHUB_STEP_SUMMARY
           echo "|     Parameters         |  Values  |    Description       |" >> $GITHUB_STEP_SUMMARY
           echo "| ---------------------- | -------- | -------------------- |" >> $GITHUB_STEP_SUMMARY
-          echo "| deployment_frequency   | ${deployment_frequency} | This is depl fre|" >> $GITHUB_STEP_SUMMARY
+          echo | deployment_frequency   | ${deployment_frequency} | This is depl fre| >> $GITHUB_STEP_SUMMARY
