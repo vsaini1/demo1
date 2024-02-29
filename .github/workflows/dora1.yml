@@ -1,4 +1,4 @@
-name: dora
+name: dora
 on:
   push:
     branches: [ "main" ]
@@ -10,52 +10,52 @@ on:
 #  token: 
 #     description: secret token 
 #     required: true  
-   
+
 jobs:
  job1:
   runs-on: ubuntu-latest  
-  #using: composite 
-  steps: 
-    - name: List Base Branch 
-      shell: bash 
-      run: echo "Checkout dora action job branch is $CURRENT_BRANCH" 
-    - name: Checkout for dora-deplyment 
-      uses: actions/checkout@v4 
-      with: 
-         fetch-depth: 0     
-    - name: Calculate lead time for changes start-time 
-      id: start-time 
-      shell: bash 
-      run: | 
-         echo "::set-output name=start_time::$(date -u +%s)" 
-    - name: Deployment Frequency 
-      id: script 
-      shell: bash 
-      run: | 
-          # Set the number of days 
-          number_of_days=30 
-          default_branch=main 
-          repository=vsaini1/demo1
-          # Get the date for the specified number of days ago 
-          date=$(date -d "$number_of_days days ago" +%Y-%m-%dT%H:%M:%SZ) 
-          # Get the workflow runs for the specified repository and branch 
-          workflow_runs=$(curl -H "Authorization: token ${{ inputs.token }}" \ 
-            "https://api.github.com/repos/$repository/actions/runs?branch=$default_branch") 
-          # Filter the workflow runs based on the date 
-          filtered_workflow_runs=$(echo "$workflow_runs" | jq '[.workflow_runs[] | select(.created_at > "'$date'")]') 
-          # Count the number of successful workflow runs 
-          deployment_frequency=$(echo "$filtered_workflow_runs" | grep '"conclusion": "success"' | wc -l) 
-          echo "Deployment frequency: $deployment_frequency" 
-          echo "::set-output name=deployment_frequency::$deployment_frequency" 
-    - name: Display metrics 
-      shell: bash 
-      run: | 
-          echo "Deployment frequency: ${{ steps.script.outputs.deployment_frequency }}" 
-    - name: Generate a table of metrics results 
-      id: generate-table 
-      shell: bash 
-      run: | 
-          echo "## VBM Backend CI/CD pipeline metrics :rocket:" >> $GITHUB_STEP_SUMMARY 
-          echo "|     Parameters         |  Values  |     Description      |" >> $GITHUB_STEP_SUMMARY 
-          echo "| ---------------------- | -------- | -------------------- |"   >> $GITHUB_STEP_SUMMARY 
-          echo "| Deployment frequency   | ${{ steps.script.outputs.deployment_frequency }} | This is depl fre |"  >> $GITHUB_STEP_SUMMARY 
+  #using: composite 
+  steps:
+    - name: List Base Branch
+      shell: bash
+      run: echo "Checkout dora action job branch is $CURRENT_BRANCH"
+    - name: Checkout for dora-deplyment
+      uses: actions/checkout@v4
+      with:
+         fetch-depth: 0
+    - name: Calculate lead time for changes start-time
+      id: start-time
+      shell: bash
+      run: |
+        echo "::set-output name=start_time::$(date -u +%s)"
+    - name: Deployment Frequency
+      id: script
+      shell: bash
+      run: |
+         # Set the number of days
+         number_of_days=30
+         default_branch=main
+         repository=vsaini1/demo1
+         # Get the date for the specified number of days ago
+         date=$(date -d "$number_of_days days ago" +%Y-%m-%dT%H:%M:%SZ)
+         # Get the workflow runs for the specified repository and branch
+          workflow_runs=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+         "https://api.github.com/repos/$repository/actions/runs?branch=$default_branch")
+          # Filter the workflow runs based on the date
+          filtered_workflow_runs=$(echo "$workflow_runs" | jq '[.workflow_runs[] | select(.created_at > "'$date'")]')
+          # Count the number of successful workflow runs
+          deployment_frequency=$(echo "$filtered_workflow_runs" | grep '"conclusion": "success"' | wc -l)
+          echo "Deployment frequency: $deployment_frequency"
+          echo "::set-output name=deployment_frequency::$deployment_frequency"
+    - name: Display metrics
+      shell: bash
+      run: |
+         echo "Deployment frequency: ${{ steps.script.outputs.deployment_frequency }}"
+    - name: Generate a table of metrics results
+      id: generate-table
+      shell: bash
+      run: |      
+          echo "## VBM Backend CI/CD pipeline metrics :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "|     Parameters         |  Values  |    Description       |" >> $GITHUB_STEP_SUMMARY
+          echo "| ---------------------- | -------- | -------------------- |" >> $GITHUB_STEP_SUMMARY
+          echo "| Deployment frequency   | ${{ steps.script.outputs.deployment_frequency }} | This is depl fre|" >> $GITHUB_STEP_SUMMARY
