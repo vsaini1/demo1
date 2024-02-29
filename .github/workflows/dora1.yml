@@ -27,7 +27,8 @@ jobs:
       id: start-time
       shell: bash
       run: |
-        echo "::set-output name=start_time::$(date -u +%s)"
+        #echo "::set-output name=start_time::$(date -u +%s)"
+        echo "{start_time}=$(date -u +%s)"
     - name: Deployment Frequency
       id: script
       shell: bash
@@ -46,7 +47,8 @@ jobs:
           # Count the number of successful workflow runs
           deployment_frequency=$(echo "$filtered_workflow_runs" | grep '"conclusion": "success"' | wc -l)
           echo "Deployment frequency: $deployment_frequency"
-          echo "::set-output name=deployment_frequency::$deployment_frequency"
+          #echo "::set-output name=deployment_frequency::$deployment_frequency"
+          echo "{deployment_frequency}=$deployment_frequency"
     - name: Display metrics
       shell: bash
       run: |
